@@ -62,7 +62,12 @@ define_static! {
     BLOCKCHAIN: Blockchain = Blockchain::from_str(&load_env!("BLOCKCHAIN")).unwrap();
     INDEX_DIR: Option<String> = load_opt_env!("INDEX_DIR");
     NETWORK: Network = load_opt_env!("NETWORK")
-        .map(|x| Network::from_str(&x).unwrap())
+        .map(|x| match x.to_ascii_lowercase().as_str() {
+            // treat common aliases as mainnet/testnet
+            "mainnet" | "prod" | "bellscoin" => Network::Bellscoin,
+            "testnet" | "test" => Network::Testnet,
+            _ => Network::from_str(&x).unwrap(),
+        })
         .unwrap_or(Network::Bellscoin);
     // multiple input inscription scan activation
     JUBILEE_HEIGHT: usize = match (*NETWORK, *BLOCKCHAIN) {
@@ -75,6 +80,8 @@ define_static! {
         (Network::Bellscoin, Blockchain::Bellscoin) => 26_371,
         (Network::Bellscoin, Blockchain::Dogecoin) => 4_609_001,
         (Network::Testnet, Blockchain::Dogecoin) => 4_260_001,
+        (Network::Bellscoin, Blockchain::Litecoin) => 2_424_429,
+        (Network::Testnet, Blockchain::Litecoin) => 2_669_127,
         _ => 0,
     };
     SERVER_URL: String =

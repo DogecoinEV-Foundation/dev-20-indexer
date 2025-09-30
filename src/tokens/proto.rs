@@ -94,8 +94,12 @@ pub enum MintProto {
     Bel20(MintProtoWrapper),
     #[serde(rename = "drc-20")]
     Drc20(MintProtoWrapper),
+    #[serde(rename = "dev-20")]
+    Dev20(MintProtoWrapper),
     #[serde(rename = "prc-20")]
     Prc20(MintProtoWrapper),
+    #[serde(rename = "ltc-20")]
+    Ltc20(MintProtoWrapper),
 }
 
 impl MintProto {
@@ -103,7 +107,10 @@ impl MintProto {
         match self {
             MintProto::Bel20(v) if *BLOCKCHAIN == Blockchain::Bellscoin => Ok(*v),
             MintProto::Drc20(v) if *BLOCKCHAIN == Blockchain::Dogecoin => Ok(*v),
+            // DEV-20 on DogecoinEV
+            MintProto::Dev20(v) if *BLOCKCHAIN == Blockchain::DogecoinEv => Ok(*v),
             MintProto::Prc20(v) if *BLOCKCHAIN == Blockchain::Pepecoin => Ok(*v),
+            MintProto::Ltc20(v) if *BLOCKCHAIN == Blockchain::Litecoin => Ok(*v),
             _ => anyhow::bail!("Unsupported type"),
         }
     }
@@ -130,8 +137,12 @@ pub enum DeployProto {
     Bel20(DeployProtoWrapper),
     #[serde(rename = "drc-20")]
     Drc20(DeployProtoWrapper),
+    #[serde(rename = "dev-20")]
+    Dev20(DeployProtoWrapper),
     #[serde(rename = "prc-20")]
     Prc20(DeployProtoWrapper),
+    #[serde(rename = "ltc-20")]
+    Ltc20(DeployProtoWrapper),
 }
 
 impl DeployProto {
@@ -139,7 +150,10 @@ impl DeployProto {
         match self {
             DeployProto::Bel20(v) if *BLOCKCHAIN == Blockchain::Bellscoin => Ok(*v),
             DeployProto::Drc20(v) if *BLOCKCHAIN == Blockchain::Dogecoin => Ok(*v),
+            // DEV-20 on DogecoinEV
+            DeployProto::Dev20(v) if *BLOCKCHAIN == Blockchain::DogecoinEv => Ok(*v),
             DeployProto::Prc20(v) if *BLOCKCHAIN == Blockchain::Pepecoin => Ok(*v),
+            DeployProto::Ltc20(v) if *BLOCKCHAIN == Blockchain::Litecoin => Ok(*v),
             _ => anyhow::bail!("Unsupported type"),
         }
     }
@@ -161,8 +175,12 @@ pub enum TransferProto {
     Bel20(MintProtoWrapper),
     #[serde(rename = "drc-20")]
     Drc20(MintProtoWrapper),
+    #[serde(rename = "dev-20")]
+    Dev20(MintProtoWrapper),
     #[serde(rename = "prc-20")]
     Prc20(MintProtoWrapper),
+    #[serde(rename = "ltc-20")]
+    Ltc20(MintProtoWrapper),
 }
 
 impl TransferProto {
@@ -170,7 +188,10 @@ impl TransferProto {
         match self {
             TransferProto::Bel20(v) if *BLOCKCHAIN == Blockchain::Bellscoin => Ok(*v),
             TransferProto::Drc20(v) if *BLOCKCHAIN == Blockchain::Dogecoin => Ok(*v),
+            // DEV-20 on DogecoinEV
+            TransferProto::Dev20(v) if *BLOCKCHAIN == Blockchain::DogecoinEv => Ok(*v),
             TransferProto::Prc20(v) if *BLOCKCHAIN == Blockchain::Pepecoin => Ok(*v),
+            TransferProto::Ltc20(v) if *BLOCKCHAIN == Blockchain::Litecoin => Ok(*v),
             _ => anyhow::bail!("Unsupported type"),
         }
     }

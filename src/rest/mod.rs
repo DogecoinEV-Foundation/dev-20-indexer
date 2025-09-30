@@ -4,7 +4,7 @@ use super::*;
 
 use aide::{
     axum::{
-        routing::{get, get_with},
+        routing::{get, get_with, post_with},
         ApiRouter, IntoApiResponse,
     },
     openapi::{OpenApi, Tag},
@@ -67,6 +67,7 @@ pub async fn run_rest(server: Arc<Server>) -> anyhow::Result<()> {
             // Token
             .api_route("/tokens", get_with(tokens::tokens, tokens::tokens_docs))
             .api_route("/token", get_with(tokens::token, tokens::token_docs))
+            .api_route("/token-supplies", post_with(tokens::token_supplies, tokens::token_supplies_docs))
             .api_route(
                 "/token/proof/{address}/{outpoint}",
                 get_with(tokens::token_transfer_proof, tokens::token_transfer_proof_docs),
@@ -85,6 +86,7 @@ pub async fn run_rest(server: Arc<Server>) -> anyhow::Result<()> {
             .finish_api_with(&mut api, api_docs)
             // Not documented
             .route("/all-addresses", axum::routing::get(info::all_addresses))
+            .route("/all-tickers", axum::routing::get(tokens::all_tickers))
             .route("/events", axum::routing::post(history::subscribe))
             .layer(Extension(Arc::new(api)))
             .layer(CompressionLayer::new())
